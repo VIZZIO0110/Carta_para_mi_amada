@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para el amor de mi alma</title>
+    <style>
+        body {
+            font-family: 'Apple Chancery', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fff0f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Contenedor Principal */
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            text-align: center;
+            width: 360px;
+            max-height: 85vh;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #ffc1e3;
+        }
+
+        #pantalla-bloqueo { display: block; }
+        
+        /* Carta con Scroll Personalizado */
+        #carta-secreta { 
+            display: none; 
+            overflow-y: auto; 
+            scrollbar-width: thin;
+            scrollbar-color: #ff80ab #ffffff;
+        }
+
+        #carta-secreta::-webkit-scrollbar { width: 6px; }
+        #carta-secreta::-webkit-scrollbar-thumb { background-color: #ff80ab; border-radius: 10px; }
+
+        /* Estilo del Mensaje */
+        .texto-dedicatoria {
+            text-align: center;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #4a4a4a;
+            margin-bottom: 25px;
+            white-space: pre-line;
+            padding: 0 10px;
+        }
+
+        .cita-biblica {
+            font-style: italic;
+            color: #ad1457;
+            font-weight: 500;
+            display: block;
+            margin: 10px 0;
+        }
+
+        /* Instrucción de las Flores */
+        .instruccion-flores {
+            font-size: 13px;
+            color: #ff80ab;
+            font-style: italic;
+            margin-bottom: 5px;
+            animation: latido 2s infinite;
+        }
+
+        @keyframes latido {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
+        }
+
+        /* Jardín de Flores */
+        .jardin {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 15px;
+            border-top: 1px solid #ffe4ed;
+            margin-top: 10px;
+        }
+
+        .flor-interactiva {
+            font-size: 30px;
+            cursor: pointer;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.3s;
+        }
+
+        .flor-interactiva:hover { transform: translateY(-5px) scale(1.2); }
+
+        /* Modales / Ventanas de flores */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            z-index: 100;
+            width: 280px;
+            text-align: center;
+            border: 2px solid #ff80ab;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.3);
+            z-index: 99;
+            backdrop-filter: blur(2px);
+        }
+
+        .btn-cerrar {
+            background: #ff80ab;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        /* Lluvia */
+        .caida {
+            position: absolute;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+            top: -50px;
+            animation: caer linear forwards;
+        }
+
+        @keyframes caer {
+            0% { transform: translateY(0vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Teclado */
+        #display { font-size: 32px; margin: 20px 0; color: #d81b60; letter-spacing: 10px; }
+        .teclado { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        button.key { padding: 15px; font-size: 20px; border: none; background: #fff5f8; border-radius: 12px; cursor: pointer; color: #ad1457; }
+        button.key:active { background: #f8bbd0; }
+        .btn-ok { background: #e8f5e9 !important; color: #2e7d32 !important; }
+    </style>
+</head>
+<body>
+
+    <div id="pantalla-bloqueo" class="container">
+        <p style="color: #ad1457; font-weight: bold; letter-spacing: 1px;">INGRESA NUESTRO CÓDIGO</p>
+        <div id="display">____</div>
+        <div class="teclado">
+            <button class="key" onclick="add(1)">1</button><button class="key" onclick="add(2)">2</button><button class="key" onclick="add(3)">3</button>
+            <button class="key" onclick="add(4)">4</button><button class="key" onclick="add(5)">5</button><button class="key" onclick="add(6)">6</button>
+            <button class="key" onclick="add(7)">7</button><button class="key" onclick="add(8)">8</button><button class="key" onclick="add(9)">9</button>
+            <button class="key" onclick="borrar()">C</button><button class="key" onclick="add(0)">0</button>
+            <button class="key btn-ok" onclick="check()">✔️</button>
+        </div>
+    </div>
+
+    <div id="carta-secreta" class="container">
+        <h2 style="color: #d81b60; margin-bottom: 5px;">❤️ Para ti, mi amada ❤️</h2>
+        <div class="texto-dedicatoria">
+¿Quieres saber porque te elijo solo a ti? <3 
+
+Cuando te conocí, no fue casualidad ni suerte. Tuvo que ser Dios. Porque yo le pedí tanto en mis oraciones: ser feliz de verdad, poder tocar el cielo con las manos. Y entonces apareciste tú, y entendí que eras la respuesta. 
+
+Me has hecho sentir cosas que nunca había sentido antes. Fueron tantas primeras veces contigo: risas que no paraban, miradas que decían todo sin palabras, momentos que me hicieron entender por qué nunca las había vivido antes. Hay cosas que solo se hacen con la persona indicada, y esa eres tú. <3
+
+Posiblemente ya lo sepas, pero quiero recordártelo: me encantas. No dejo de pensar en ti todos los días. En cada cosa que haces, en cómo eres, en cómo me haces sentir vivo. Y aunque la distancia esté ahí, nunca va a ser excusa para dejar de amarte. Al contrario, es la prueba de cuán grande y real es este amor. Porque el amor verdadero no se apaga con los problemas; si es de Dios, sobrevive tormentas, distancias, silencios y dudas. 
+
+<span class="cita-biblica">“Las muchas aguas no podrán apagar el amor, ni lo ahogarán los ríos” (Cantares 8:7)</span>
+
+Y por eso, nunca te voy a dejar ir. Porque encontré el amor, lo abracé y no lo solté.
+
+<span class="cita-biblica">“Apenas hube pasado de ellos un poco, hallé luego al que ama mi alma; me aferre a él, y no lo dejé...” (Cantares 3:4)</span>
+
+Eso soy yo contigo. Te encontré y no pienso soltarte jamás. Sigo teniendo esperanza todos los días, porque sé que Dios escucha mis oraciones y conoce lo mucho que mi corazón te anhela. Quiero que nuestros sueños y anhelos estén cimentados en Él, para que en su tiempo y su voluntad se hagan realidad. Porque confío en que Él nos guía.
+
+Te explicaría todo lo que siento por ti, pero me llevaría una vida entera... y tal vez otra más. Porque amarte es algo eterno, y nunca va a terminar.
+        </div>
+
+        <div class="instruccion-flores">Toca cada flor, hay algo más para ti...</div>
+
+        <div class="jardin">
+            <span class="flor-interactiva" onclick="verM(1)">🌷</span>
+            <span class="flor-interactiva" onclick="verM(2)">🌸</span>
+            <span class="flor-interactiva" onclick="verM(3)">🌹</span>
+        </div>
+    </div>
+
+    <div id="overlay" class="overlay" onclick="cerrar()"></div>
+    <div id="m1" class="modal"><h3>Mi Promesa</h3><p>Cuidar de tu corazón como el tesoro más grande que Dios me dio.</p><button class="btn-cerrar" onclick="cerrar()">Cerrar</button></div>
+    <div id="m2" class="modal"><h3>Mi Deseo</h3><p>Que pronto el "hola" sea con un abrazo y no a través de una pantalla.</p><button class="btn-cerrar" onclick="cerrar()">Cerrar</button></div>
+    <div id="m3" class="modal"><h3>Eternidad</h3><p>Dios, Tú y yo . El plan perfecto.</p><button class="btn-cerrar" onclick="cerrar()">Cerrar</button></div>
+
+    <script>
+        let pass = "";
+        const pin = "0704"; 
+
+        function add(n) { if(pass.length < 4) { pass += n; document.getElementById("display").innerText = "● ".repeat(pass.length); } }
+        function borrar() { pass = ""; document.getElementById("display").innerText = "____"; }
+
+        function check() {
+            if (pass === pin) {
+                document.getElementById("pantalla-bloqueo").style.display = "none";
+                document.getElementById("carta-secreta").style.display = "block";
+                setInterval(lluvia, 150);
+            } else { alert("Vuelve a intentar, mi amor (cuando nos conocimos) 🌸"); borrar(); }
+        }
+
+        function verM(id) { document.getElementById("overlay").style.display = "block"; document.getElementById("m"+id).style.display = "block"; }
+        function cerrar() { document.getElementById("overlay").style.display = "none"; document.querySelectorAll('.modal').forEach(m => m.style.display = "none"); }
+
+        function lluvia() {
+            const el = document.createElement("div");
+            el.classList.add("caida");
+            const t = ["❤️", "🌸", "🌷", "✨", "💖"];
+            el.innerText = t[Math.floor(Math.random() * t.length)];
+            el.style.left = Math.random() * 100 + "vw";
+            el.style.fontSize = (Math.random() * 20 + 15) + "px";
+            const d = Math.random() * 4 + 4;
+            el.style.animationDuration = d + "s";
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), d * 1000);
+        }
+    </script>
+</body>
+</html>
